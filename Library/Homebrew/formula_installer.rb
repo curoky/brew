@@ -1121,7 +1121,7 @@ class FormulaInstaller
       formula.fetch_patches
       formula.resources.each(&:fetch)
     end
-    downloader.fetch
+    downloader.fetch(verify_download_integrity: false)
   end
 
   def downloader
