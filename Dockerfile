@@ -2,6 +2,8 @@ ARG version=20.04
 FROM ubuntu:$version
 ARG DEBIAN_FRONTEND=noninteractive
 
+ARG HOMEBREW_PREFIX=/home/linuxbrew
+
 # hadolint ignore=DL3008
 RUN apt-get update \
   && apt-get install -y --no-install-recommends software-properties-common \
@@ -30,21 +32,21 @@ RUN apt-get update \
   && useradd -m -s /bin/bash linuxbrew \
   && echo 'linuxbrew ALL=(ALL) NOPASSWD:ALL' >>/etc/sudoers
 
-COPY . /home/linuxbrew/.linuxbrew/Homebrew
-ENV PATH=/home/linuxbrew/.linuxbrew/bin:/home/linuxbrew/.linuxbrew/sbin:$PATH
-WORKDIR /home/linuxbrew
+COPY . ${HOMEBREW_PREFIX}/.linuxbrew/Homebrew
+ENV PATH=${HOMEBREW_PREFIX}/.linuxbrew/bin:${HOMEBREW_PREFIX}/.linuxbrew/sbin:$PATH
+WORKDIR ${HOMEBREW_PREFIX}
 
 # hadolint ignore=DL3003
-RUN cd /home/linuxbrew/.linuxbrew \
+RUN cd ${HOMEBREW_PREFIX}/.linuxbrew \
   && mkdir -p bin etc include lib opt sbin share var/homebrew/linked Cellar \
-  && ln -s ../Homebrew/bin/brew /home/linuxbrew/.linuxbrew/bin/ \
-  && git -C /home/linuxbrew/.linuxbrew/Homebrew remote set-url origin https://github.com/Homebrew/brew \
-  && git -C /home/linuxbrew/.linuxbrew/Homebrew fetch origin \
+  && ln -s ../Homebrew/bin/brew ${HOMEBREW_PREFIX}/.linuxbrew/bin/ \
+  && git -C ${HOMEBREW_PREFIX}/.linuxbrew/Homebrew remote set-url origin https://github.com/Homebrew/brew \
+  && git -C ${HOMEBREW_PREFIX}/.linuxbrew/Homebrew fetch origin \
   && HOMEBREW_NO_ANALYTICS=1 HOMEBREW_NO_AUTO_UPDATE=1 brew tap homebrew/core \
   && brew install-bundler-gems \
   && brew cleanup \
-  && { git -C /home/linuxbrew/.linuxbrew/Homebrew config --unset gc.auto; true; } \
-  && { git -C /home/linuxbrew/.linuxbrew/Homebrew config --unset homebrew.devcmdrun; true; } \
+  && { git -C ${HOMEBREW_PREFIX}/.linuxbrew/Homebrew config --unset gc.auto; true; } \
+  && { git -C ${HOMEBREW_PREFIX}/.linuxbrew/Homebrew config --unset homebrew.devcmdrun; true; } \
   && rm -rf ~/.cache \
-  && chown -R linuxbrew: /home/linuxbrew/.linuxbrew \
-  && chmod -R g+w,o-w /home/linuxbrew/.linuxbrew
+  && chown -R linuxbrew: ${HOMEBREW_PREFIX}/.linuxbrew \
+  && chmod -R g+w,o-w ${HOMEBREW_PREFIX}/.linuxbrew
