@@ -182,6 +182,6 @@ module Homebrew
     puts "Downloaded to: #{download}" unless already_fetched
     puts "SHA256: #{download.sha256}"
 
-    f.verify_download_integrity(download)
+    # f.verify_download_integrity(download)
   end
 end

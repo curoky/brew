@@ -144,7 +144,7 @@ class Resource
     end
 
     download = cached_download
-    verify_download_integrity(download) if verify_download_integrity
+    verify_download_integrity(download) if false
     download
   end
 
