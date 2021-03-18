@@ -1255,3 +1255,6 @@ class FormulaInstaller
     EOS
   end
 end
+
+
+require "extend/os/formula_installer"
