@@ -151,7 +151,7 @@ class FormulaInstaller
     end
 
     bottle = formula.bottle_specification
-    unless bottle.compatible_locations?
+    unless bottle.compatible_cellar_with_name? formula.name
       if output_warning
         opoo <<~EOS
           Building #{formula.full_name} from source as the bottle needs:
