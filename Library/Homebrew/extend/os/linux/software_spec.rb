@@ -8,8 +8,9 @@ FORCE_BOTTLE = [
 ]
 
 IGNORE_BOTTLE = [
-  'perl', 'ruby', 'vim', 'zsh', 'less', 'ncurses', 'bison', 'ninja', 'figlet',
+  'perl', 'ruby', 'zsh', 'less', 'ncurses', 'bison', 'ninja', 'figlet',
   'openssl@1.1', 'git', 'ghostscript'
+  # , 'vim' must install with gcc-10
 ]
 
 class BottleSpecification
